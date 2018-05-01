@@ -36,9 +36,8 @@ public class MainCommand implements CommandExecutor {
                         }
                     } else if (args[0].equalsIgnoreCase("list")) {
                         sender.sendMessage(header("Effects"));
-                        for (PotionEffectType effect : PotionEffectType.values()) {
-                            Reference.plugin.getLogger().info(effect.getName().toLowerCase());
-                            sender.sendMessage("§8§l[§7P§6E§8§l]§r " + effect.getName().toLowerCase());
+                        for (PotionEffect effect : PotionEffect.values()) {
+                            sender.sendMessage("§8§l[§7P§6E§8§l]§r " + effect.name().toLowerCase());
                         }
                         sender.sendMessage(footer());
                     }
@@ -56,8 +55,8 @@ public class MainCommand implements CommandExecutor {
 
         //Clearing all effects
         for (Player player : main.getServer().getOnlinePlayers()) {
-            for (PotionEffectType types : PotionEffectType.values()) {
-                player.removePotionEffect(PotionEffectType.getByName(types.toString()));
+            for (PotionEffect types : PotionEffect.values()) {
+                player.removePotionEffect(PotionEffectType.getByName(types.name()));
             }
         }
 

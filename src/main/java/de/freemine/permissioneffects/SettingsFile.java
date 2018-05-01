@@ -38,8 +38,8 @@ public class SettingsFile {
         }
     }
 
-    public static boolean isEffectEnabled(OfflinePlayer p, PotionEffectType effect) {
-        return getPlayerSection(p).getBoolean(effect.getName().toLowerCase(), true);
+    public static boolean isEffectEnabled(OfflinePlayer p, PotionEffect effect) {
+        return getPlayerSection(p).getBoolean(effect.name().toLowerCase(), true);
     }
 
     public static ConfigurationSection getPlayerSection(OfflinePlayer p) {
