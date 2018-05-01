@@ -3,7 +3,11 @@ name: PermissionEffects
 version: 0.1-SNAPSHOT
 website: http://freemine.de/
 main: de.freemine.permissioneffects.Main
+soft-depends: [helper,helper-profiles]
 commands:
   PermissionEffects:
     aliases: [pe]
     permission: pe.admin
+  ToggleEffects:
+    aliases: [te,toggle,togglee,teffects]
+    permission: pe.toggle

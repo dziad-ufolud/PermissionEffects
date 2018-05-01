@@ -1,23 +1,18 @@
 package de.freemine.permissioneffects;
 
-import de.freemine.permissioneffects.Listener.PotionEffectTypes;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-
-import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * @author LPkkjHD
  */
-public class command implements CommandExecutor {
+public class MainCommand implements CommandExecutor {
     private Main main;
 
-    public command(Main main) {
+    public MainCommand(Main main) {
         this.main = main;
     }
 
@@ -39,6 +34,12 @@ public class command implements CommandExecutor {
                             sender.sendMessage("§4ERROR: §cFailed to reload the PermissionEffects");
                             e.printStackTrace();
                         }
+                    } else if (args[0].equalsIgnoreCase("list")) {
+                        sender.sendMessage(header("Effects"));
+                        for (PotionEffectType effect : PotionEffectType.values()) {
+                            sender.sendMessage("§8§l[§7P§6E§8§l]§r §" + effect.getColor() + effect.getName() + "§r " + effect.getName().toLowerCase());
+                        }
+                        sender.sendMessage(footer());
                     }
                 } else {
                     sender.sendMessage("§cYou just gave me too many arguments");
@@ -51,36 +52,17 @@ public class command implements CommandExecutor {
     }
 
     private void ReloadPermissionEffects() {
-        ArrayList<PotionEffectTypes> possibleEffects = new ArrayList<PotionEffectTypes>();
-        Collections.addAll(possibleEffects, PotionEffectTypes.values());
-
-        ArrayList<Integer> strength = new ArrayList<Integer>();
-        strength.add(1);
-        strength.add(2);
-        strength.add(3);
-        strength.add(4);
 
         //Clearing all effects
         for (Player player : main.getServer().getOnlinePlayers()) {
-            for (PotionEffectTypes types : possibleEffects) {
+            for (PotionEffectType types : PotionEffectType.values()) {
                 player.removePotionEffect(PotionEffectType.getByName(types.toString()));
             }
         }
 
         //setting the new Values
         for (Player player : main.getServer().getOnlinePlayers()) {
-            if (!player.hasPermission("pe.bypass") || !player.isOp()) {
-                for (PotionEffectTypes effect : possibleEffects) {
-                    if (player.hasPermission("pe." + effect.toString().toLowerCase())) {
-                        for (Integer integer : strength) {
-                            if (player.hasPermission("pe." + effect.toString().toLowerCase() + "." + integer.toString())) {
-                                player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect.toString()), 100000000, integer - 1, false, false));
-                            }
-                        }
-                        player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effect.toString()), 1000000000, 0, false, false));
-                    }
-                }
-            }
+            Util.addEffects(player);
         }
     }
 
