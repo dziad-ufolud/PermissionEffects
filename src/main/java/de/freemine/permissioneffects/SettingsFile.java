@@ -3,7 +3,6 @@ package de.freemine.permissioneffects;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.potion.PotionEffectType;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,13 +27,13 @@ public class SettingsFile {
         }
     }
 
-    public static void setEffect(OfflinePlayer p, PotionEffectType effect, Boolean enabled) {
+    public static void setEffect(OfflinePlayer p, PotionEffect effect, Boolean enabled) {
         ConfigurationSection sect = getPlayerSection(p);
         // only store when disabled so the db remains smaller
         if (!enabled) {
-            sect.set(effect.getName().toLowerCase(), enabled);
+            sect.set(effect.name().toLowerCase(), enabled);
         } else {
-            sect.set(effect.getName().toLowerCase(), null);
+            sect.set(effect.name().toLowerCase(), null);
         }
     }
 
@@ -43,6 +42,10 @@ public class SettingsFile {
     }
 
     public static ConfigurationSection getPlayerSection(OfflinePlayer p) {
-        return config.getConfigurationSection("PE." + p.getUniqueId().toString());
+        ConfigurationSection sect = config.getConfigurationSection("PE." + p.getUniqueId().toString());
+        if (sect == null) {
+            sect = config.createSection("PE." + p.getUniqueId().toString());
+        }
+        return sect;
     }
 }

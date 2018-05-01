@@ -1,6 +1,6 @@
 author: LPkkjHD
-name: PermissionEffects
-version: 0.1-SNAPSHOT
+name: ${project.artifactId}
+version: ${project.version}
 website: http://freemine.de/
 main: de.freemine.permissioneffects.Main
 depends: [helper]
