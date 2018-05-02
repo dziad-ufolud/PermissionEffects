@@ -19,5 +19,6 @@ public class Main extends ExtendedJavaPlugin {
     @Override
     public void disable() {
         getLogger().info("Disabling PermissionEffects by LPkkjHD");
+        SettingsFile.save();
     }
 }
