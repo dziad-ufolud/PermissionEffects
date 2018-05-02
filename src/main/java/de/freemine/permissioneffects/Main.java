@@ -13,7 +13,7 @@ public class Main extends ExtendedJavaPlugin {
         SettingsFile.init();
         getServer().getPluginManager().registerEvents(new Mainlistener(this), this);
         getCommand("PermissionEffects").setExecutor(new MainCommand(this));
-        this.registerCommand(new ToggleCommand());
+        this.registerCommand(new ToggleCommand(),"te","toggle","togglee","teffects");
     }
 
     @Override
