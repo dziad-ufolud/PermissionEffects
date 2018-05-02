@@ -3,7 +3,7 @@ name: PermissionEffects
 version: 0.1-SNAPSHOT
 website: http://freemine.de/
 main: de.freemine.permissioneffects.Main
-soft-depends: [helper,helper-profiles]
+depends: [helper]
 commands:
   PermissionEffects:
     aliases: [pe]
