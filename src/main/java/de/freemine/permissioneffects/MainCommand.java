@@ -4,7 +4,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffectType;
 
 /**
  * @author LPkkjHD
@@ -24,11 +23,14 @@ public class MainCommand implements CommandExecutor {
                     sender.sendMessage(" ");
                     sender.sendMessage("§a/pe reload          §2#Reloads the Effects");
                     sender.sendMessage(" ");
+                    sender.sendMessage("§a/pe list          §2#lists the possible Effects");
+                    sender.sendMessage(" ");
                     sender.sendMessage(footer());
                 } else if (args.length == 1) {
                     if (args[0].equalsIgnoreCase("reload")) {
                         try {
-                            ReloadPermissionEffects();
+                            SettingsFile.init(); //Reload settings from disk
+                            ReloadPermissionEffects(); //Reset effects on player
                             sender.sendMessage("§8§l[§7P§6E§8§l] §aReload complete");
                         } catch (Exception e) {
                             sender.sendMessage("§4ERROR: §cFailed to reload the PermissionEffects");
@@ -52,13 +54,6 @@ public class MainCommand implements CommandExecutor {
     }
 
     private void ReloadPermissionEffects() {
-
-        //Clearing all effects
-        for (Player player : main.getServer().getOnlinePlayers()) {
-            for (PotionEffect types : PotionEffect.values()) {
-                player.removePotionEffect(PotionEffectType.getByName(types.name()));
-            }
-        }
 
         //setting the new Values
         for (Player player : main.getServer().getOnlinePlayers()) {
