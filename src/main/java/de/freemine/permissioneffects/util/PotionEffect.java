@@ -1,4 +1,4 @@
-package de.freemine.permissioneffects;
+package de.freemine.permissioneffects.util;
 
 public enum PotionEffect {
 

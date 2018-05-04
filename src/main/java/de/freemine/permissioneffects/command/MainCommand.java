@@ -1,5 +1,9 @@
-package de.freemine.permissioneffects;
+package de.freemine.permissioneffects.command;
 
+import de.freemine.permissioneffects.Main;
+import de.freemine.permissioneffects.util.PotionEffect;
+import de.freemine.permissioneffects.util.SettingsFile;
+import de.freemine.permissioneffects.util.Util;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -8,7 +12,7 @@ import org.bukkit.entity.Player;
 /**
  * @author LPkkjHD
  */
-public class MainCommand implements CommandExecutor {
+public class MainCommand implements CommandExecutor {//TODO Tab-completion
     private Main main;
 
     public MainCommand(Main main) {
@@ -42,7 +46,7 @@ public class MainCommand implements CommandExecutor {
                             sender.sendMessage("§8§l[§7P§6E§8§l]§r " + effect.toString());
                         }
                         sender.sendMessage(footer());
-                    }
+                    }//TODO player reset command
                 } else {
                     sender.sendMessage("§cYou just gave me too many arguments");
                 }

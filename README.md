@@ -10,4 +10,8 @@ wanting to add:
 - [x] helper integration
 - [x] JenkinsCI pipeline support
 - [x] Replace System.out with proper logger
-- [ ] Support for more effect amplifiers
+- [ ] ~~Support for more effect amplifiers~~ **Not possible due to permissions list not being searchable**
+- [ ] Add config option for amount of amplifiers allowed
+- [ ] Per toggle permissions
+- [ ] Player reset command
+- [ ] Tab completion

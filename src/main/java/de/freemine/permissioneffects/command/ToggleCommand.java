@@ -1,5 +1,8 @@
-package de.freemine.permissioneffects;
+package de.freemine.permissioneffects.command;
 
+import de.freemine.permissioneffects.util.PotionEffect;
+import de.freemine.permissioneffects.util.SettingsFile;
+import de.freemine.permissioneffects.util.Util;
 import me.lucko.helper.item.ItemStackBuilder;
 import me.lucko.helper.menu.Gui;
 import me.lucko.helper.menu.Item;
@@ -26,7 +29,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.function.Consumer;
 
-public class ToggleCommand implements CommandExecutor {
+public class ToggleCommand implements CommandExecutor {//TODO Tab-completion
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -54,7 +57,7 @@ public class ToggleCommand implements CommandExecutor {
         }
 
         public static EffectMenu create(Player player) {
-            ArrayList<PotionEffect> ef = Util.getAllowedEffects(player);
+            ArrayList<PotionEffect> ef = Util.getAllowedEffects(player);//TODO per potion toggle permissions
             // calculates the amount of lines required for an inventory of ef.size() potions
             int lines;
             if (ef.size() % 9 == 0) {

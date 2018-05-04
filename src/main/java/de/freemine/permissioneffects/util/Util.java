@@ -1,4 +1,4 @@
-package de.freemine.permissioneffects;
+package de.freemine.permissioneffects.util;
 
 
 import org.bukkit.entity.Player;
@@ -27,10 +27,10 @@ public class Util {
     public static ArrayList<SimplePotionInfo> getAplicableEffects(Player player) {
         ArrayList<SimplePotionInfo> effects = new ArrayList<>();
         if (noBypass(player)) {
-            for (PotionEffect effect : de.freemine.permissioneffects.PotionEffect.values()) {
+            for (PotionEffect effect : PotionEffect.values()) {
                 if (player.hasPermission("pe." + effect.name().toLowerCase()) &&
                         SettingsFile.isEffectEnabled(player, effect)) {
-                    for (Integer integer : new int[]{4, 3, 2, 1}) {
+                    for (Integer integer : new int[]{4, 3, 2, 1}) {//TODO replace with config option for amplifiers
                         if (player.hasPermission("pe." + effect.name().toLowerCase() + "." + integer.toString())) {
                             effects.add(new SimplePotionInfo(effect, integer));
                             break;
@@ -56,7 +56,7 @@ public class Util {
         if (noBypass(player)) {
             if (player.hasPermission("pe." + effect.name().toLowerCase()) &&
                     SettingsFile.isEffectEnabled(player, effect)) {
-                for (Integer integer : new int[]{4, 3, 2, 1}) {
+                for (Integer integer : new int[]{4, 3, 2, 1}) {//TODO replace with config option for amplifiers
                     if (player.hasPermission("pe." + effect.name().toLowerCase() + "." + integer.toString())) {
                         player.addPotionEffect(new SimplePotionInfo(effect, integer).getBukkitEffect());
                         break;

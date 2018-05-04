@@ -1,5 +1,6 @@
-package de.freemine.permissioneffects;
+package de.freemine.permissioneffects.util;
 
+import de.freemine.permissioneffects.Reference;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;

@@ -1,7 +1,7 @@
 package de.freemine.permissioneffects.Listener;
 
 import de.freemine.permissioneffects.Main;
-import de.freemine.permissioneffects.Util;
+import de.freemine.permissioneffects.util.Util;
 import me.lucko.helper.Schedulers;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
