@@ -17,7 +17,9 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionType;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,6 +30,9 @@ public class ToggleCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (!sender.hasPermission("pe.toggle")) {
+            return true;
+        }
         if (args.length == 0 && sender instanceof Player) { //TODO not player error message, help, tab-completion & toggle via command
             openMenu((Player) sender);
             return true;
@@ -83,8 +88,23 @@ public class ToggleCommand implements CommandExecutor {
                 org.bukkit.potion.PotionEffect bukkitEffect = new org.bukkit.potion.PotionEffect(PotionEffectType.getByName(effect.name()), 0, 0, false, false);
 
                 ItemStackBuilder builder = ItemStackBuilder.of(Material.POTION).amount(1)
-                        .transformMeta(m -> ((PotionMeta) m).addCustomEffect(bukkitEffect, true))
-                        .name((this.enabled ? "§a" : "§c") + this.effect.name())
+                        .transformMeta(m -> {
+                            PotionType type = null;
+                            for (PotionType type1 : PotionType.values()) {
+                                if (bukkitEffect.getType().equals(type1.getEffectType())) {
+                                    type = type1;
+                                    break;
+                                }
+                            }
+                            if (type == null) {
+                                type = PotionType.AWKWARD;
+                            }
+
+                            ((PotionMeta) m).setBasePotionData(new PotionData(type, false, false));
+                            ((PotionMeta) m).clearCustomEffects();
+                            ((PotionMeta) m).addCustomEffect(bukkitEffect, true);
+                        })
+                        .name((this.enabled ? "§a" : "§c") + this.effect.toString())
                         .lore("§rToggle the potion effect:§d" + bukkitEffect.getType().getName() + " " +
                                 (this.enabled ? "§coff" : "§aon")
                         );
@@ -105,7 +125,7 @@ public class ToggleCommand implements CommandExecutor {
                         ItemStack itms = event.getCurrentItem();
                         ItemMeta meta = itms.getItemMeta();
                         SettingsFile.setEffect(this.player, this.effect, this.enabled);
-                        meta.setDisplayName((this.enabled ? "§a" : "§c") + this.effect.name());
+                        meta.setDisplayName((this.enabled ? "§a" : "§c") + this.effect.toString());
                         meta.setLore(new ArrayList<>(Collections.singletonList("§rToggle the potion effect:§d" + bukkitEffect.getType().getName() + " " +
                                 (this.enabled ? "§coff" : "§aon"))));
                         if (this.enabled) {
@@ -119,7 +139,7 @@ public class ToggleCommand implements CommandExecutor {
                                 SoundCategory.BLOCKS,
                                 1, 1
                         );
-                        Util.addEffects(this.player);
+                        Util.updateEffect(this.player, this.effect);
                     });
                 }
                 this.item = new Item(handlers, item);

@@ -39,7 +39,7 @@ public class MainCommand implements CommandExecutor {
                     } else if (args[0].equalsIgnoreCase("list")) {
                         sender.sendMessage(header("Effects"));
                         for (PotionEffect effect : PotionEffect.values()) {
-                            sender.sendMessage("§8§l[§7P§6E§8§l]§r " + effect.name().toLowerCase());
+                            sender.sendMessage("§8§l[§7P§6E§8§l]§r " + effect.toString());
                         }
                         sender.sendMessage(footer());
                     }

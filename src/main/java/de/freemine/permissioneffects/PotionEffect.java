@@ -142,4 +142,10 @@ public enum PotionEffect {
     PotionEffect(int i) {
         this.id = i;
     }
+
+
+    @Override
+    public String toString() {
+        return super.toString().toLowerCase().replace("_", " ");
+    }
 }

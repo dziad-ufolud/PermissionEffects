@@ -26,7 +26,7 @@ public class Util {
 
     public static ArrayList<SimplePotionInfo> getAplicableEffects(Player player) {
         ArrayList<SimplePotionInfo> effects = new ArrayList<>();
-        if (!player.hasPermission("pe.bypass") || !player.isOp()) {
+        if (noBypass(player)) {
             for (PotionEffect effect : de.freemine.permissioneffects.PotionEffect.values()) {
                 if (player.hasPermission("pe." + effect.name().toLowerCase()) &&
                         SettingsFile.isEffectEnabled(player, effect)) {
@@ -49,6 +49,25 @@ public class Util {
         }
 
         return effects;
+    }
+
+    public static void updateEffect(Player player, PotionEffect effect) {
+        player.removePotionEffect(PotionEffectType.getByName(effect.name()));
+        if (noBypass(player)) {
+            if (player.hasPermission("pe." + effect.name().toLowerCase()) &&
+                    SettingsFile.isEffectEnabled(player, effect)) {
+                for (Integer integer : new int[]{4, 3, 2, 1}) {
+                    if (player.hasPermission("pe." + effect.name().toLowerCase() + "." + integer.toString())) {
+                        player.addPotionEffect(new SimplePotionInfo(effect, integer).getBukkitEffect());
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    public static boolean noBypass(Player player) {
+        return !player.hasPermission("pe.bypass") || !player.isOp();
     }
 
     public static class SimplePotionInfo {
