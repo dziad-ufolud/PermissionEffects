@@ -21,7 +21,7 @@ node {
             }
         }
     }
-    stage('Results') {
-        archive 'target/*.jar'
+    stage('Archive') {
+        archiveArtifacts 'target/*.jar'
     }
 }
