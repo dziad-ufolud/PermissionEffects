@@ -11,7 +11,6 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -29,14 +28,19 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.function.Consumer;
 
-public class ToggleCommand implements CommandExecutor {//TODO Tab-completion
+public class ToggleCommand extends PECommand {
+
+
+    public ToggleCommand() {
+        super("ToggleEffects");
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission("pe.toggle")) {
             return true;
         }
-        if (args.length == 0 && sender instanceof Player) { //TODO not player error message, help, tab-completion & toggle via command
+        if (args.length == 0 && sender instanceof Player) { //TODO not player error message, help & toggle via command
             openMenu((Player) sender);
             return true;
         }
@@ -48,15 +52,50 @@ public class ToggleCommand implements CommandExecutor {//TODO Tab-completion
         effectMenu.open();
     }
 
+    @Override
+    public ArrayList<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        ArrayList<String> completions = new ArrayList<>();
+        Player p;
+        if (!(sender instanceof Player)) {
+            return completions;//TODO make console version
+        } else {
+            p = (Player) sender;
+        }
+        if (args.length == 0) {
+            completions.add("toggle");
+            completions.add("enable");
+            completions.add("disable");
+
+        } else if (args.length == 1) {
+            if ("toggle".startsWith(args[0])) {
+                completions.add("toggle");
+            }
+            if ("disable".startsWith(args[0])) {
+                completions.add("disable");
+            }
+            if ("enable".startsWith(args[0])) {
+                completions.add("enable");
+            }
+
+        } else if (args.length == 2) {
+            for (PotionEffect effect : Util.getAllowedEffects(p)) {
+                if (effect.name().toLowerCase().startsWith(args[1].toLowerCase())) {
+                    completions.add(effect.name().toLowerCase());
+                }
+            }
+        }
+        return completions;
+    }
+
     private static class EffectMenu extends Gui {
         private final ArrayList<PotionEffect> effects;
 
-        public EffectMenu(Player player, int lines, ArrayList<PotionEffect> effects) {
+        private EffectMenu(Player player, int lines, ArrayList<PotionEffect> effects) {
             super(player, lines, "§8§l[§7P§6E§8§l] toggles");
             this.effects = effects;
         }
 
-        public static EffectMenu create(Player player) {
+        static EffectMenu create(Player player) {
             ArrayList<PotionEffect> ef = Util.getAllowedEffects(player);//TODO per potion toggle permissions
             // calculates the amount of lines required for an inventory of ef.size() potions
             int lines;
@@ -90,6 +129,8 @@ public class ToggleCommand implements CommandExecutor {//TODO Tab-completion
 
                 org.bukkit.potion.PotionEffect bukkitEffect = new org.bukkit.potion.PotionEffect(PotionEffectType.getByName(effect.name()), 0, 0, false, false);
 
+
+                //TODO replace this with reading from config file
                 ItemStackBuilder builder = ItemStackBuilder.of(Material.POTION).amount(1)
                         .transformMeta(m -> {
                             PotionType type = null;

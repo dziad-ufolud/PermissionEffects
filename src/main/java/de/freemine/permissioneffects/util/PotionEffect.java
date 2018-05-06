@@ -135,7 +135,19 @@ public enum PotionEffect {
     /**
      * Loot table unluck.
      */
-    UNLUCK(27);
+    UNLUCK(27),
+
+    //1.13
+    /**
+     * Decreases falling speed and negates fall damage.
+     */
+    SLOW_FALLING(28),
+
+    /**
+     * Increases underwater visibility and mining speed, prevents drowning.
+     */
+    CONDUIT_POWER(29);
+
 
     private final int id;
 

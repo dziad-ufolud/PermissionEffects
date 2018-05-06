@@ -1,5 +1,5 @@
 author: LPkkjHD
-authors: [LPkkjHD, stefan01, bigibas123]
+authors: [stefan01, bigibas123]
 name: ${project.artifactId}
 version: ${project.version}
 website: http://freemine.de/
@@ -7,8 +7,21 @@ main: de.freemine.permissioneffects.Main
 depend: [helper]
 commands:
   PermissionEffects:
-    aliases: [pe]
+    description: "The main command of the ${project.artifactId} plugin"
+    permission-message: "§cYou don't have permission §pe.admin §cto use this command"
+    usage: "Usage: /<command> [reload/list]"
+    aliases: [pe,permissioneffects]
     permission: pe.admin
   ToggleEffects:
-    aliases: [te,toggle,togglee,teffects]
+    description: "Allows you to toggle the effects that are applied to you"
+    permission-message: "§cYou don't have permission §pe.admin §cto use this command"
+    usage: "Usage: /<command> [toggle/enable/disable] [effect] [player]"
+    aliases: [te,toggle,togglee,teffects,toggleeffects]
     permission: pe.toggle
+permissions:
+  pe.admin:
+    description: "Allows you to use the command /pe"
+    default: op
+  pe.toggle:
+    description: "Allows you to use the command /te"
+    default: true

@@ -21,6 +21,13 @@ public class SettingsFile {
     }
 
     public static void save() {
+        //Trying to clear empty sections
+        ConfigurationSection mainSect = SettingsFile.config.getConfigurationSection("PE");
+        mainSect.getKeys(false).forEach(k -> {
+            if (mainSect.getConfigurationSection(k).getKeys(false).size() <= 0) {
+                mainSect.set(k, null);
+            }
+        });
         try {
             SettingsFile.config.save(getRealFile());
         } catch (IOException e) {

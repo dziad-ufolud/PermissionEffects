@@ -15,8 +15,8 @@ public class Main extends ExtendedJavaPlugin {
         Reference.plugin = this;
         SettingsFile.init();
         getServer().getPluginManager().registerEvents(new Mainlistener(this), this);
-        this.registerCommand(new MainCommand(this), "pe", "permissioneffects");
-        this.registerCommand(new ToggleCommand(),"te","toggle","togglee","teffects");
+        new MainCommand(this);
+        new ToggleCommand();
     }
 
     @Override
