@@ -1,18 +1,22 @@
 package de.freemine.permissioneffects.command;
 
 import de.freemine.permissioneffects.Main;
+import de.freemine.permissioneffects.Reference;
+import de.freemine.permissioneffects.file.SettingsFile;
 import de.freemine.permissioneffects.util.PotionEffect;
-import de.freemine.permissioneffects.util.SettingsFile;
 import de.freemine.permissioneffects.util.Util;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author LPkkjHD
  */
 public class MainCommand extends PECommand {//TODO Tab-completion
-    private Main main;
+    private final Main main;
 
     public MainCommand(Main main) {
         super("PermissionEffects");
@@ -35,7 +39,7 @@ public class MainCommand extends PECommand {//TODO Tab-completion
                     try {
                         SettingsFile.init(); //Reload settings from disk
                         ReloadPermissionEffects(); //Reset effects on player
-                        sender.sendMessage("§8§l[§7P§6E§8§l] §aReload complete");
+                        sender.sendMessage(Reference.colouredPrefix + "§aReload complete");
                     } catch (Exception e) {
                         sender.sendMessage("§4ERROR: §cFailed to reload the PermissionEffects");
                         e.printStackTrace();
@@ -43,7 +47,7 @@ public class MainCommand extends PECommand {//TODO Tab-completion
                 } else if (args[0].equalsIgnoreCase("list")) {
                     sender.sendMessage(header("Effects"));
                     for (PotionEffect effect : PotionEffect.values()) {
-                        sender.sendMessage("§8§l[§7P§6E§8§l]§r " + effect.toString());
+                        sender.sendMessage(Reference.colouredPrefix + effect.toString());
                     }
                     sender.sendMessage(footer());
                 }//TODO player reset command
@@ -54,6 +58,23 @@ public class MainCommand extends PECommand {//TODO Tab-completion
         } else {
             return true;
         }
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        ArrayList<String> completions = new ArrayList<>();
+        if (args.length == 0) {
+            completions.add("reload");
+            completions.add("list");
+        } else if (args.length == 1) {
+            if ("reload".startsWith(args[0].toLowerCase())) {
+                completions.add("reload");
+            }
+            if ("list".startsWith(args[0].toLowerCase())) {
+                completions.add("list");
+            }
+        }
+        return completions;
     }
 
     private void ReloadPermissionEffects() {

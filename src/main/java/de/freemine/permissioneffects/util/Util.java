@@ -1,10 +1,14 @@
 package de.freemine.permissioneffects.util;
 
 
+import de.freemine.permissioneffects.file.ConfigFile;
+import de.freemine.permissioneffects.file.SettingsFile;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Util {
     public static void addEffects(Player player) {
@@ -14,7 +18,7 @@ public class Util {
 
     public static ArrayList<PotionEffect> getAllowedEffects(Player player) {
         ArrayList<PotionEffect> effects = new ArrayList<>();
-        if (!player.hasPermission("pe.bypass") || !player.isOp()) {
+        if (noBypass(player)) {
             for (PotionEffect effect : PotionEffect.values()) {
                 if (player.hasPermission("pe." + effect.name().toLowerCase())) {
                     effects.add(effect);
@@ -24,14 +28,15 @@ public class Util {
         return effects;
     }
 
-    public static ArrayList<SimplePotionInfo> getAplicableEffects(Player player) {
+    public static ArrayList<SimplePotionInfo> getApplicableEffects(Player player) {
         ArrayList<SimplePotionInfo> effects = new ArrayList<>();
         if (noBypass(player)) {
             for (PotionEffect effect : PotionEffect.values()) {
-                if (player.hasPermission("pe." + effect.name().toLowerCase()) &&
+                if (hasApplyEffectPermission(player, effect) &&
                         SettingsFile.isEffectEnabled(player, effect)) {
-                    for (Integer integer : new int[]{4, 3, 2, 1}) {//TODO replace with config option for amplifiers
-                        if (player.hasPermission("pe." + effect.name().toLowerCase() + "." + integer.toString())) {
+                    List<Integer> amps = ConfigFile.getAmplifiers();
+                    for (Integer integer : amps) {
+                        if (hasApplyEffectPermission(player, effect, integer)) {
                             effects.add(new SimplePotionInfo(effect, integer));
                             break;
                         }
@@ -44,7 +49,7 @@ public class Util {
 
     public static ArrayList<org.bukkit.potion.PotionEffect> getEffectsToApply(Player p) {
         ArrayList<org.bukkit.potion.PotionEffect> effects = new ArrayList<>();
-        for (SimplePotionInfo spi : getAplicableEffects(p)) {
+        for (SimplePotionInfo spi : getApplicableEffects(p)) {
             effects.add(spi.getBukkitEffect());
         }
 
@@ -54,10 +59,11 @@ public class Util {
     public static void updateEffect(Player player, PotionEffect effect) {
         player.removePotionEffect(PotionEffectType.getByName(effect.name()));
         if (noBypass(player)) {
-            if (player.hasPermission("pe." + effect.name().toLowerCase()) &&
+            if (hasApplyEffectPermission(player, effect) &&
                     SettingsFile.isEffectEnabled(player, effect)) {
-                for (Integer integer : new int[]{4, 3, 2, 1}) {//TODO replace with config option for amplifiers
-                    if (player.hasPermission("pe." + effect.name().toLowerCase() + "." + integer.toString())) {
+                List<Integer> amps = ConfigFile.getAmplifiers();
+                for (Integer integer : amps) {
+                    if (hasApplyEffectPermission(player, effect, integer)) {
                         player.addPotionEffect(new SimplePotionInfo(effect, integer).getBukkitEffect());
                         break;
                     }
@@ -68,6 +74,22 @@ public class Util {
 
     public static boolean noBypass(Player player) {
         return !player.hasPermission("pe.bypass") || !player.isOp();
+    }
+
+    public static boolean hasApplyEffectPermission(Player p, PotionEffect effect) {
+        return p.hasPermission("pe." + effect.name().toLowerCase());
+    }
+
+    public static boolean hasApplyEffectPermission(Player p, PotionEffect effect, Integer amplifier) {
+        return p.hasPermission("pe." + effect.name().toLowerCase() + "." + amplifier.toString());
+    }
+
+    public static boolean hasToggleEffectPermission(Player p, PotionEffect effect) {
+        return p.hasPermission("pe." + effect.name().toLowerCase() + ".toggle");
+    }
+
+    public static boolean hasChangeOther(CommandSender sender) {
+        return sender.hasPermission("pe.other") || sender.isOp();
     }
 
     public static class SimplePotionInfo {

@@ -14,10 +14,10 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 /**
  * @author LPkkjHD
  */
-public class Mainlistener implements Listener {
-    private Main main;
+public class MainListener implements Listener {
+    private final Main main;
 
-    public Mainlistener(Main main) {
+    public MainListener(Main main) {
         this.main = main;
     }
 

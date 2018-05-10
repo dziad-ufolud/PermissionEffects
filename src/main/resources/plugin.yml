@@ -15,7 +15,7 @@ commands:
   ToggleEffects:
     description: "Allows you to toggle the effects that are applied to you"
     permission-message: "§cYou don't have permission §pe.admin §cto use this command"
-    usage: "Usage: /<command> [toggle/enable/disable] [effect] [player]"
+    usage: "Usage: /<command> <toggle/enable/disable> <effect> [player]"
     aliases: [te,toggle,togglee,teffects,toggleeffects]
     permission: pe.toggle
 permissions:
