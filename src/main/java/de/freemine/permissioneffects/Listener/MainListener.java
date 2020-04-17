@@ -29,7 +29,7 @@ public class MainListener implements Listener {
     @EventHandler
     public void PlayerRespawnEvent(PlayerRespawnEvent event) {
         final Player player = event.getPlayer();
-        Schedulers.sync().runLater(() -> Util.addEffects(player), 5L);
+        Util.addEffects(player);
     }
 
     @EventHandler

@@ -20,7 +20,7 @@ public class Util {
         ArrayList<PotionEffect> effects = new ArrayList<>();
         if (noBypass(player)) {
             for (PotionEffect effect : PotionEffect.values()) {
-                if (player.hasPermission("pe." + effect.name().toLowerCase())) {
+                if (player.hasPermission("pe." + effect.toString())) {
                     effects.add(effect);
                 }
             }
@@ -73,19 +73,19 @@ public class Util {
     }
 
     public static boolean noBypass(Player player) {
-        return !player.hasPermission("pe.bypass") || !player.isOp();
+        return !player.hasPermission("pe.bypass") && !player.isOp();
     }
 
     public static boolean hasApplyEffectPermission(Player p, PotionEffect effect) {
-        return p.hasPermission("pe." + effect.name().toLowerCase());
+        return p.hasPermission("pe." + effect.toString());
     }
 
     public static boolean hasApplyEffectPermission(Player p, PotionEffect effect, Integer amplifier) {
-        return p.hasPermission("pe." + effect.name().toLowerCase() + "." + amplifier.toString());
+        return p.hasPermission("pe." + effect.toString() + "." + amplifier.toString());
     }
 
     public static boolean hasToggleEffectPermission(Player p, PotionEffect effect) {
-        return p.hasPermission("pe." + effect.name().toLowerCase() + ".toggle");
+        return p.hasPermission("pe." + effect.toString() + ".toggle");
     }
 
     public static boolean hasChangeOther(CommandSender sender) {

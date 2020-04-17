@@ -4,7 +4,6 @@ name: ${project.artifactId}
 version: ${project.version}
 website: http://freemine.de/
 main: de.freemine.permissioneffects.Main
-depend: [helper]
 commands:
   PermissionEffects:
     description: "The main command of the ${project.artifactId} plugin"

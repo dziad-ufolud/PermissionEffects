@@ -146,7 +146,9 @@ public enum PotionEffect {
     /**
      * Increases underwater visibility and mining speed, prevents drowning.
      */
-    CONDUIT_POWER(29);
+    CONDUIT_POWER(29),
+    
+    DOLPHINS_GRACE(30);
 
 
     private final int id;
@@ -158,6 +160,6 @@ public enum PotionEffect {
 
     @Override
     public String toString() {
-        return super.toString().toLowerCase().replace("_", " ");
+        return super.toString().toLowerCase();
     }
 }
